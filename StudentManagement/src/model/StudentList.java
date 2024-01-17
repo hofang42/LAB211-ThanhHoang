@@ -33,7 +33,6 @@ public class StudentList {
 
     public void createStudent(StudentModel student) {
         int id = size() + 1;
-        student.setTotalCourse(student.getTotalCourse() + 1);
         student.setId(id);
         studentList.add(student);
     }
@@ -46,5 +45,18 @@ public class StudentList {
             }
         }
         return student;
-    }    
+    }
+
+    public String courseSelected(int courseId) {
+        switch (courseId) {
+            case 1:
+                return "Java";
+            case 2:
+                return ".Net";
+            case 3:
+                return "C/C++";
+            default:
+                return "";
+        }
+    }
 }

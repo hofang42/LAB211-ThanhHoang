@@ -8,12 +8,13 @@ package model;
  *
  * @author hoang
  */
-public class StudentModel implements Comparable<StudentModel>{
+public class StudentModel implements Comparable<StudentModel> {
+
     protected int id;
     protected String studentName;
     protected int semester;
     protected String courseName;
-    protected int totalCourse;
+    protected int courseId;
 
     public StudentModel() {
     }
@@ -22,7 +23,13 @@ public class StudentModel implements Comparable<StudentModel>{
         this.studentName = studentName;
         this.semester = semester;
         this.courseName = courseName;
-    }        
+    }
+
+    public StudentModel(String studentName, int semester, int courseId) {
+        this.studentName = studentName;
+        this.semester = semester;
+        this.courseId = courseId;
+    }
 
     public int getId() {
         return id;
@@ -56,26 +63,34 @@ public class StudentModel implements Comparable<StudentModel>{
         this.courseName = courseName;
     }
 
-    public int getTotalCourse() {
-        return totalCourse;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setTotalCourse(int totalCourse) {
-        this.totalCourse = totalCourse;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
-    
-    
     @Override
     public String toString() {
-        return String.format("%-15s%-15s%-15s%-15s\n", id,studentName, semester, courseName);
+        return String.format("%-15s%-15s%-15s%-15s\n", id, studentName, semester, courseName);
     }
 
     @Override
     public int compareTo(StudentModel o) {
         return o.studentName.compareTo(this.studentName);
     }
-    
-    
-    
+
+    public String courseSelected(int courseId) {
+        switch (courseId) {
+            case 1:
+                return "Java";
+            case 2:
+                return ".Net";
+            case 3:
+                return "C/C++";
+            default:
+                return "";
+        }
+    }
 }

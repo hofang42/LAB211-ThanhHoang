@@ -18,6 +18,7 @@ public class StudentView {
 
     private StudentList studentList;
     private Validation val = new Validation();
+    private StudentModel stuModel = new StudentModel();
 
     public StudentView() {
         studentList = new StudentList();
@@ -94,30 +95,73 @@ public class StudentView {
             return;
         } else {
             if (choice) {
+                // Update Student Information
                 String newStudentName = val.getString("Enter Student Name");
-                int newSemester = val.getInt("Enter Semester");
-                System.out.print("Course Name:\n1. Java\t2. Net\t3. C/C++\nEnter course: ");
-                int courseNameInt = val.checkInputIntLimit(1, 3);
-                String newCourseName = "";
-                if (courseNameInt == 1) {
-                    newCourseName = "Java";
+                if (newStudentName.isBlank()) {
+                    newStudentName = studentFound.getStudentName();
                 }
-                if (courseNameInt == 2) {
-                    newCourseName = ".Net";
+
+                String newSemesterStr = val.getString("Enter Semester");
+                int newSemester = 0;
+
+                if (!newSemesterStr.isBlank()) {
+                    try {
+                        newSemester = Integer.parseInt(newSemesterStr);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input. Please enter a valid integer for the semester.");
+                        // You might want to handle the error or prompt the user again.
+                        // For now, we just keep the default value.
+                    }
+                } else {
+                    newSemester = studentFound.getSemester();
                 }
-                if (courseNameInt == 3) {
-                    newCourseName = "C/C++";
+
+                String newCourseNameStr = val.getString("Course Name:\n1. Java\t2. Net\t3. C/C++\nEnter course: ");
+                int newCourseName = 0;
+
+                if (!newCourseNameStr.isBlank()) {
+                    try {
+                        newCourseName = Integer.parseInt(newCourseNameStr);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input. Please enter a valid integer for the course name.");
+                        // You might want to handle the error or prompt the user again.
+                        // For now, we keep the existing course name.
+                    }
+                } else {
+                    // If the input is blank, keep the existing course name
+                    newCourseNameStr = studentFound.getCourseName();
                 }
+
+                // Set the new values to the studentFound object
                 studentFound.setStudentName(newStudentName);
                 studentFound.setSemester(newSemester);
-                studentFound.setCourseName(newCourseName);
+                studentFound.setCourseName(newCourseNameStr);
+
                 System.out.println("Update success.");
-                return;
+
             } else {
+                // Delete Student
                 studentList.getStudentList().remove(studentFound);
                 System.out.println("Delete success.");
-                return;
             }
+
+        }
+    }
+
+    public boolean isUpdated(String value) {
+        return !value.isBlank();
+    }
+
+    public String courseSelected(int id) {
+        switch (id) {
+            case 1:
+                return "Java";
+            case 2:
+                return ".Net";
+            case 3:
+                return "C/C++";
+            default:
+                return "";
         }
     }
 }

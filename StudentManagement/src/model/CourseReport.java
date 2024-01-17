@@ -8,16 +8,17 @@ package model;
  *
  * @author hoang
  */
-public class Report {
+public class CourseReport {
 
     private String studentName;
     private String courseName;
+    private int courseId;
     private int totalCourse;
 
-    public Report() {
+    public CourseReport() {
     }
 
-    public Report(String studentName, String courseName, int totalCourse) {
+    public CourseReport(String studentName, String courseName, int totalCourse) {
         this.studentName = studentName;
         this.courseName = courseName;
         this.totalCourse = totalCourse;
@@ -46,4 +47,5 @@ public class Report {
     public void setTotalCourse(int totalCourse) {
         this.totalCourse = totalCourse;
     }
+
 }

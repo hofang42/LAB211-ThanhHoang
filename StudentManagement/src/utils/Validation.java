@@ -65,4 +65,13 @@ public class Validation {
             System.out.print("Enter again: ");
         }
     }
+
+    public Integer checkInt(String msg) {
+        try {
+            return Integer.parseInt(msg);
+        } catch (NumberFormatException ex) {
+            System.out.println("Invalid number Int");
+            return null;
+        }
+    }
 }
