@@ -5,8 +5,8 @@
 package controller;
 
 import model.StudentList;
-import utils.MethodsSupport;
 import view.Menu;
+import view.StudentView;
 
 /**
  *
@@ -15,25 +15,25 @@ import view.Menu;
 public class StudentController extends Menu {
 
     private StudentList studentList;
-    private MethodsSupport med;
+    private StudentView stuView;
 
     public StudentController() {
         super("WELCOME TO STUDENT MANAGEMENT", new String[]{"Create", "Find and sort", "Update/Delete", "Report", "Exit"});
         studentList = new StudentList();
-        med = new MethodsSupport();
+        stuView = new StudentView();
     }
 
     @Override
     public void execute(int n) {
         switch (n) {
             case 1:
-                med.takeInfoStudent();
+                stuView.takeInfoStudent();
                 break;
             case 2:
-                med.findAndSort();
+                stuView.findAndSort();
                 break;
             case 3:
-                med.updateOrDelete();
+                stuView.updateOrDelete();
                 break;
             case 4:
                 break;
