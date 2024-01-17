@@ -5,6 +5,8 @@
 package controller;
 
 import model.StudentList;
+import utils.FileLoad;
+import utils.Validation;
 import view.Menu;
 import view.StudentView;
 
@@ -14,12 +16,12 @@ import view.StudentView;
  */
 public class StudentController extends Menu {
 
-    private StudentList studentList;
+    private StudentList studentList = new StudentList();
     private StudentView stuView;
+    
 
     public StudentController() {
         super("WELCOME TO STUDENT MANAGEMENT", new String[]{"Create", "Find and sort", "Update/Delete", "Report", "Exit"});
-        studentList = new StudentList();
         stuView = new StudentView();
     }
 

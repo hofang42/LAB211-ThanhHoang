@@ -62,6 +62,19 @@ public class Validation {
         return nInt;
     }
 
+    public String checkInputString() {
+        //loop until user input correct
+        while (true) {
+            String result = sc.nextLine().trim();
+            if (result.isEmpty()) {
+                System.err.println("Not empty");
+                System.out.print("Enter again: ");
+            } else {
+                return result;
+            }
+        }
+    }
+
     public int checkInputIntLimit(int min, int max) {
         while (true) {
             try {
@@ -75,6 +88,23 @@ public class Validation {
                 System.out.println("Please input number in rage [" + min + ", " + max + "]");
                 System.out.print("Enter again: ");
             }
+        }
+    }
+
+    public boolean checkInputYN() {
+        //loop until user input correct
+        while (true) {
+            String result = checkInputString();
+            //return true if user input y/Y
+            if (result.equalsIgnoreCase("Y")) {
+                return true;
+            }
+            //return false if user input n/N
+            if (result.equalsIgnoreCase("N")) {
+                return false;
+            }
+            System.err.println("Please input y/Y or n/N.");
+            System.out.print("Enter again: ");
         }
     }
 
@@ -102,7 +132,7 @@ public class Validation {
         }
     }
 
-    public boolean checkReportExist(ArrayList<CourseReport> lr,CourseReport course ){
+    public boolean checkReportExist(ArrayList<CourseReport> lr, CourseReport course) {
         for (CourseReport report : lr) {
             if (course.getStudentName().equalsIgnoreCase(report.getStudentName())
                     && course.getCourseName().equalsIgnoreCase(report.getCourseName())
@@ -113,4 +143,17 @@ public class Validation {
         return true;
     }
 
+    public boolean isValid(String data, String regex) {
+        return data.trim().matches(regex);
+    }
+
+    public boolean isName(String data) {
+        return !data.isEmpty();
+    }
+
+    public boolean isCourse(String data) {
+        return data.equalsIgnoreCase("java")
+                || data.equalsIgnoreCase("c/c++")
+                || data.equalsIgnoreCase(".net");
+    }
 }

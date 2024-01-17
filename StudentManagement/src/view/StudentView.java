@@ -11,6 +11,7 @@ import java.util.Map;
 import model.CourseReport;
 import model.StudentList;
 import model.StudentModel;
+import utils.FileLoad;
 import utils.Validation;
 
 /**
@@ -22,9 +23,11 @@ public class StudentView {
     private StudentList studentList;
     private Validation val = new Validation();
     private StudentModel stuModel = new StudentModel();
+    private FileLoad file = new FileLoad();
 
     public StudentView() {
         studentList = new StudentList();
+        file.loadData(studentList);
     }
 
     public void takeInfoStudent() {
