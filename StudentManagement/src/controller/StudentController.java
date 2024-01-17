@@ -36,6 +36,7 @@ public class StudentController extends Menu {
                 stuView.updateOrDelete();
                 break;
             case 4:
+                stuView.report();
                 break;
             case 5:
                 break;

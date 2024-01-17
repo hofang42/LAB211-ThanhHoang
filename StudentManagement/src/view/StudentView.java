@@ -6,6 +6,9 @@ package view;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import model.CourseReport;
 import model.StudentList;
 import model.StudentModel;
 import utils.Validation;
@@ -25,20 +28,21 @@ public class StudentView {
     }
 
     public void takeInfoStudent() {
-        String studentName = val.getString("Enter Student Name");
+        String studentName= "";
+        boolean flag = true;
+        while(flag){
+             studentName = val.getString("Enter Student Name");
+            if (studentName.isBlank()){
+                System.out.println("Do not leave blank");
+                flag = true;
+            }
+            else flag = false;
+        }
+        
         int semester = val.getInt("Enter Semester");
-        System.out.print("Course Name:\n1. Java\t2. Net\t3. C/C++\nEnter course: ");
+        System.out.print("Course Name:\n1. Java\t2. .Net\t3. C/C++\nEnter course: ");
         int courseNameInt = val.checkInputIntLimit(1, 3);
-        String courseName = "";
-        if (courseNameInt == 1) {
-            courseName = "Java";
-        }
-        if (courseNameInt == 2) {
-            courseName = ".Net";
-        }
-        if (courseNameInt == 3) {
-            courseName = "C/C++";
-        }
+        String courseName = courseSelected(courseNameInt);
         StudentModel student = new StudentModel(studentName, semester, courseName);
         studentList.createStudent(student);
     }
@@ -95,7 +99,6 @@ public class StudentView {
             return;
         } else {
             if (choice) {
-                // Update Student Information
                 String newStudentName = val.getString("Enter Student Name");
                 if (newStudentName.isBlank()) {
                     newStudentName = studentFound.getStudentName();
@@ -108,31 +111,17 @@ public class StudentView {
                     try {
                         newSemester = Integer.parseInt(newSemesterStr);
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid input. Please enter a valid integer for the semester.");
-                        // You might want to handle the error or prompt the user again.
-                        // For now, we just keep the default value.
                     }
                 } else {
                     newSemester = studentFound.getSemester();
                 }
 
-                String newCourseNameStr = val.getString("Course Name:\n1. Java\t2. Net\t3. C/C++\nEnter course: ");
-                int newCourseName = 0;
+                int newCourseName = val.getIntAcceptEnter("Course Name:\n1. Java\t2. .Net\t3. C/C++\nEnter course: ");
+                String newCourseNameStr = courseSelected(newCourseName);
 
-                if (!newCourseNameStr.isBlank()) {
-                    try {
-                        newCourseName = Integer.parseInt(newCourseNameStr);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input. Please enter a valid integer for the course name.");
-                        // You might want to handle the error or prompt the user again.
-                        // For now, we keep the existing course name.
-                    }
-                } else {
-                    // If the input is blank, keep the existing course name
+                if (newCourseNameStr.isBlank()) {
                     newCourseNameStr = studentFound.getCourseName();
                 }
-
-                // Set the new values to the studentFound object
                 studentFound.setStudentName(newStudentName);
                 studentFound.setSemester(newSemester);
                 studentFound.setCourseName(newCourseNameStr);
@@ -140,7 +129,6 @@ public class StudentView {
                 System.out.println("Update success.");
 
             } else {
-                // Delete Student
                 studentList.getStudentList().remove(studentFound);
                 System.out.println("Delete success.");
             }
@@ -162,6 +150,36 @@ public class StudentView {
                 return "C/C++";
             default:
                 return "";
+        }
+    }
+
+    //REPORT
+    public void report() {
+        ArrayList<StudentModel> listReport = studentList.getStudentList();
+        if (listReport.isEmpty()) {
+            System.out.println("List empty.");
+            return;
+        }
+
+        Map<String, Map<String, Integer>> reportMap = new HashMap<>();
+
+        for (StudentModel student : listReport) {
+            String studentName = student.getStudentName();
+            String courseName = student.getCourseName();
+
+            reportMap.computeIfAbsent(studentName, k -> new HashMap<>());
+            reportMap.get(studentName).merge(courseName, 1, Integer::sum);
+        }
+
+        System.out.printf("%-15s|%-15s|%-15s\n", "Student name", "Course", "Total of Course");
+
+        for (Map.Entry<String, Map<String, Integer>> entry : reportMap.entrySet()) {
+            String studentName = entry.getKey();
+            for (Map.Entry<String, Integer> courseEntry : entry.getValue().entrySet()) {
+                String courseName = courseEntry.getKey();
+                int total = courseEntry.getValue();
+                System.out.printf("%-15s|%-15s|%-15d\n", studentName, courseName, total);
+            }
         }
     }
 }

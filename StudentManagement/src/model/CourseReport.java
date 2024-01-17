@@ -11,8 +11,9 @@ package model;
 public class CourseReport {
 
     private String studentName;
+    private int StudentId;
     private String courseName;
-    private int courseId;
+    
     private int totalCourse;
 
     public CourseReport() {
@@ -31,6 +32,16 @@ public class CourseReport {
     public void setStudentName(String studentName) {
         this.studentName = studentName;
     }
+
+    public int getStudentId() {
+        return StudentId;
+    }
+
+    public void setStudentId(int StudentId) {
+        this.StudentId = StudentId;
+    }
+    
+    
 
     public String getCourseName() {
         return courseName;
