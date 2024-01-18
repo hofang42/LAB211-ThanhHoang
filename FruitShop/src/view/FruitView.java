@@ -4,11 +4,9 @@
  */
 package view;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Scanner;
-import model.CustomerModel;
 import model.FruitList;
 import model.FruitModel;
 import utils.Validation;
@@ -23,7 +21,6 @@ public class FruitView {
     private Validation val = new Validation();
     protected Hashtable<String, FruitList> orders = new Hashtable();
     private FruitList fuirtOrders = new FruitList();
-    private Scanner sc = new Scanner(System.in);
 
     public FruitView() {
         fruitList = new FruitList();
