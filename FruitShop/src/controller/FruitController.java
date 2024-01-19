@@ -4,6 +4,8 @@
  */
 package controller;
 
+import java.util.ArrayList;
+import model.FruitModel;
 import view.FruitView;
 import view.Menu;
 
@@ -13,6 +15,8 @@ import view.Menu;
  */
 public class FruitController extends Menu{
 
+    ArrayList<FruitModel> fruitList = new ArrayList<>();
+    
     FruitView fruView = new FruitView();
     
     public FruitController() {
@@ -23,14 +27,14 @@ public class FruitController extends Menu{
     public void execute(int n) {
         switch (n) {
             case 1:
-                fruView.takeInfoFruit();
+                fruView.takeInfoFruit(fruitList);
                 break;
             case 2:
-                fruView.viewOrders();
+                fruView.viewOrders(fruitList);
                 break;
             case 3:
-                fruView.viewListOfFruit();
-                fruView.takeOrders();
+                fruView.viewListOfFruit(fruitList);
+                fruView.takeOrders(fruitList);
                 break;
             case 4:
                 System.exit(0);
