@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import model.CourseReport;
-import model.StudentList;
 import model.StudentModel;
 import utils.FileLoad;
 import utils.Validation;
@@ -20,40 +18,55 @@ import utils.Validation;
  */
 public class StudentView {
 
-    private StudentList studentList;
     private Validation val = new Validation();
     private StudentModel stuModel = new StudentModel();
-    private FileLoad file = new FileLoad();
 
+
+    
     public StudentView() {
-        studentList = new StudentList();
-        file.loadData(studentList);
+        
     }
 
-    public void takeInfoStudent() {
-        String studentName= "";
+    public void takeInfoStudent(ArrayList<StudentModel> arr) {
+        String studentName = "";
         boolean flag = true;
-        while(flag){
-             studentName = val.getString("Enter Student Name");
-            if (studentName.isBlank()){
+        while (flag) {
+            studentName = val.getString("Enter Student Name");
+            if (studentName.isBlank()) {
                 System.out.println("Do not leave blank");
                 flag = true;
+            } else {
+                flag = false;
             }
-            else flag = false;
         }
-        
+
         int semester = val.getInt("Enter Semester");
         System.out.print("Course Name:\n1. Java\t2. .Net\t3. C/C++\nEnter course: ");
         int courseNameInt = val.checkInputIntLimit(1, 3);
         String courseName = courseSelected(courseNameInt);
         StudentModel student = new StudentModel(studentName, semester, courseName);
-        studentList.createStudent(student);
+        createStudent(student, arr);
     }
 
-    public ArrayList<StudentModel> searchStudentByName() {
+    public ArrayList<StudentModel> searchStudentByName(ArrayList<StudentModel> arr) {
         String keyword = val.getString("Input Student name");
         System.out.println("The students found: ");
-        return studentList.search(p -> p.getStudentName().equals(keyword));
+
+        ArrayList<StudentModel> result = new ArrayList<>();
+
+        for (StudentModel student : arr) {
+            if (student.getStudentName().equals(keyword)) {
+                result.add(student);
+            }
+        }
+
+        return result;
+    }
+
+    public void createStudent(StudentModel student, ArrayList<StudentModel> arr) {
+        int id = arr.size() + 1;
+        student.setId(id);
+        arr.add(student);
     }
 
     public StudentModel searchStudentByID(int id, ArrayList<StudentModel> stu) {
@@ -73,8 +86,8 @@ public class StudentView {
         }
     }
 
-    public void findAndSort() {
-        ArrayList<StudentModel> listStudentFound = searchStudentByName();
+    public void findAndSort(ArrayList<StudentModel> arr) {
+        ArrayList<StudentModel> listStudentFound = searchStudentByName(arr);
         if (listStudentFound.isEmpty()) {
             System.out.println("List empty.");
             return;
@@ -89,13 +102,13 @@ public class StudentView {
         }
     }
 
-    public void updateOrDelete() {
-        if (studentList.size() == 0) {
+    public void updateOrDelete(ArrayList<StudentModel> arr) {
+        if (arr.isEmpty()) {
             System.out.println("List empty.");
             return;
         }
         int id = val.getInt("Enter ID");
-        StudentModel studentFound = searchStudentByID(id, studentList.getStudentList());
+        StudentModel studentFound = searchStudentByID(id, arr);
         boolean choice = val.checkInputUD();
         if (studentFound == null) {
             System.out.println("Not found student.");
@@ -132,7 +145,7 @@ public class StudentView {
                 System.out.println("Update success.");
 
             } else {
-                studentList.getStudentList().remove(studentFound);
+                arr.remove(studentFound);
                 System.out.println("Delete success.");
             }
 
@@ -157,8 +170,8 @@ public class StudentView {
     }
 
     //REPORT
-    public void report() {
-        ArrayList<StudentModel> listReport = studentList.getStudentList();
+    public void report(ArrayList<StudentModel> arr) {
+        ArrayList<StudentModel> listReport = arr;
         if (listReport.isEmpty()) {
             System.out.println("List empty.");
             return;

@@ -4,7 +4,9 @@
  */
 package controller;
 
-import model.StudentList;
+import java.util.ArrayList;
+import model.StudentModel;
+import utils.FileLoad;
 import view.Menu;
 import view.StudentView;
 
@@ -14,9 +16,9 @@ import view.StudentView;
  */
 public class StudentController extends Menu {
 
-    private StudentList studentList = new StudentList();
     private StudentView stuView;
-    
+    private FileLoad file = new FileLoad();
+    ArrayList<StudentModel> studentList = file.loadData("InputFile.txt");
 
     public StudentController() {
         super("WELCOME TO STUDENT MANAGEMENT", new String[]{"Create", "Find and sort", "Update/Delete", "Report", "Exit"});
@@ -27,16 +29,16 @@ public class StudentController extends Menu {
     public void execute(int n) {
         switch (n) {
             case 1:
-                stuView.takeInfoStudent();
+                stuView.takeInfoStudent(studentList);
                 break;
             case 2:
-                stuView.findAndSort();
+                stuView.findAndSort(studentList);
                 break;
             case 3:
-                stuView.updateOrDelete();
+                stuView.updateOrDelete(studentList);
                 break;
             case 4:
-                stuView.report();
+                stuView.report(studentList);
                 break;
             case 5:
                 break;

@@ -19,6 +19,15 @@ public class StudentModel implements Comparable<StudentModel> {
     public StudentModel() {
     }
 
+    public StudentModel(int id, String studentName, int semester, String courseName) {
+        this.id = id;
+        this.studentName = studentName;
+        this.semester = semester;
+        this.courseName = courseName;
+    }
+
+    
+    
     public StudentModel(String studentName, int semester, String courseName) {
         this.studentName = studentName;
         this.semester = semester;
