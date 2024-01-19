@@ -5,6 +5,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import model.FruitModel;
 import view.FruitView;
 import view.Menu;
@@ -13,16 +14,16 @@ import view.Menu;
  *
  * @author hoang
  */
-public class FruitController extends Menu{
+public class FruitController extends Menu {
 
-    ArrayList<FruitModel> fruitList = new ArrayList<>();
-    
-    FruitView fruView = new FruitView();
-    
+    private ArrayList<FruitModel> fruitList = new ArrayList<>();
+    private Hashtable<String, ArrayList<FruitModel>> orders = new Hashtable();
+    private FruitView fruView = new FruitView();
+
     public FruitController() {
         super("FRUIT SHOP SYSTEM", new String[]{"Create Fruit", "View orders", "Shopping(for buyer)", "Exit"});
     }
-       
+
     @Override
     public void execute(int n) {
         switch (n) {
@@ -30,16 +31,16 @@ public class FruitController extends Menu{
                 fruView.takeInfoFruit(fruitList);
                 break;
             case 2:
-                fruView.viewOrders(fruitList);
+                fruView.viewOrders(orders);
                 break;
             case 3:
                 fruView.viewListOfFruit(fruitList);
-                fruView.takeOrders(fruitList);
+                fruView.takeOrders(fruitList, orders);
                 break;
             case 4:
                 System.exit(0);
-                break;            
+                break;
         }
     }
-    
+
 }

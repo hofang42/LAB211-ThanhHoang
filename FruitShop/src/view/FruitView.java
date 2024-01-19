@@ -18,9 +18,7 @@ import utils.Validation;
 public class FruitView {
 
 //    private FruitList fruitList;
-    private Validation val = new Validation();
-    protected Hashtable<String, ArrayList<FruitModel>> orders = new Hashtable();
-    private final ArrayList<FruitModel> fuirtOrders = new ArrayList<>();
+    private Validation val = new Validation();    
 
     public FruitView() {
     }
@@ -67,24 +65,22 @@ public class FruitView {
     }
 
     //VIEW ORDERS
-    public void viewOrders(ArrayList<FruitModel> ls) {
-        for (Map.Entry<String, ArrayList<FruitModel>> entry : orders.entrySet()) {
-            String customerName = entry.getKey();
+    public void viewOrders(Hashtable<String, ArrayList<FruitModel>> orderTable) {
+        for (Map.Entry<String, ArrayList<FruitModel>> entry : orderTable.entrySet()) {
+            System.out.println("Customer: " + entry.getKey());
+            double totalAmount = 0;
 
-            System.out.println("Customer: " + customerName);
-            double Totalamount = 0;
             // Print order details
             System.out.printf("%-7s | %-10s | %-6s | %-6s%n", "Product", "Quantity", "Price", "Amount");
-            for (FruitModel fruit : fuirtOrders) {
 
+            for (FruitModel fruit : entry.getValue()) {
                 double amount = calculateTotalAmount(fruit.getQuantity(), fruit.getPrice());
                 System.out.printf("%-10s  %-10s  $%-8s  $%-7s%n",
                         fruit.getFruitName(), fruit.getQuantity(), fruit.getPrice(), amount);
-                Totalamount += amount;
+                totalAmount += amount;
             }
 
-            // Print total amount
-            System.out.printf("Total: " + Totalamount + "$\n");
+            System.out.printf("Total: $%.2f%n", totalAmount);
         }
     }
 
@@ -101,12 +97,15 @@ public class FruitView {
         }
     }
 
-    public void takeOrders(ArrayList<FruitModel> ls) {
+    public void takeOrders(ArrayList<FruitModel> ls, Hashtable<String, ArrayList<FruitModel>> orderTable) {
+        boolean orderNow = false;
+        String fruitName = "";
+        int itemId = 0, quantity = 0, totalQuantity = 0;
         do {
-            int itemId = 0, quantity = 0;
+
             System.out.print("Select item: ");
             itemId = val.checkInputIntLimit(0, ls.size() - 1);
-            String fruitName = getNameById(ls, itemId);
+            fruitName = getNameById(ls, itemId);
             System.out.println("You selected: " + fruitName);
             if (isStocksEmpty(ls, itemId)) {
                 System.out.println("Stock is empty");
@@ -115,27 +114,31 @@ public class FruitView {
 
             System.out.print("Please input quantity: ");
             quantity = val.checkInputIntLimit(1, getQuantityById(ls, itemId));
-
-            double amount = 0;
-            FruitModel fruitTemp = new FruitModel(fruitName, getPriceById(ls, itemId), quantity, getOriginById(ls, itemId));
-            fuirtOrders.add(fruitTemp);
-
-            System.out.printf("| %-10s | %-10s | %-6s | %-6s |%n", "Product", "Quantity", "Price", "Amount");
-            for (FruitModel fruit : fuirtOrders) {
-                amount = calculateTotalAmount(quantity, fruit.getPrice());
-                System.out.printf("| %-10s | %-12s | %-9s | %-6s |%n",
-                        fruit.getFruitName(), quantity, fruit.getPrice(), amount);
-                System.out.println("Total: " + amount + "$");
-            }
-            String customerName = val.getString("Input your name");
-            orders.put(customerName, fuirtOrders);
-            System.out.print("Do you want to continue ? Y/N: ");
+            totalQuantity += quantity;
+            System.out.print("Do you want to order now ? Y/N: ");
+            orderNow = val.checkInputYN();
 
             int newQuantity = getQuantityById(ls, itemId) - quantity;
-            ls.get(itemId).setQuantity(newQuantity);
-//            deleteFruit(itemId);
-        } while (val.checkInputYN());
+            ls.get(itemId).setQuantity(newQuantity);            
+        } while (!orderNow);
+        double amount = 0;
+        FruitModel fruitTemp = new FruitModel(fruitName, getPriceById(ls, itemId), totalQuantity, getOriginById(ls, itemId));
+
+        // Create a new list for each customer and add the order
+        ArrayList<FruitModel> customerOrders = new ArrayList<>();
+        customerOrders.add(fruitTemp);
+        System.out.printf("| %-10s | %-10s | %-6s | %-6s |%n", "Product", "Quantity", "Price", "Amount");
+        for (FruitModel fruit : customerOrders) {
+            amount = calculateTotalAmount(totalQuantity, fruit.getPrice());
+            System.out.printf("| %-10s | %-12s | %-9s | %-6s |%n",
+                    fruit.getFruitName(), totalQuantity, fruit.getPrice(), amount);
+            System.out.println("Total: " + amount + "$");
+        }
+        // Update the orderTable with the customer's name and their orders
+        String customerName = val.getString("Input your name");
+        orderTable.put(customerName, customerOrders);
     }
+ 
 
     public String getNameById(ArrayList<FruitModel> ls, int id) {
         if (id >= 0 && id <= ls.size()) {
