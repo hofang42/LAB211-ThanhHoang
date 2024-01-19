@@ -36,7 +36,11 @@ public class FruitList {
         fruitList.add(fruit);
     }
 
-    public FruitModel get(int id){
-        return fruitList.get(id);
+    public FruitModel get(int id) {
+        return fruitList.get(id - 1);
+    }
+
+    public void delete(int id) {
+        fruitList.remove(id-1);
     }
 }

@@ -6,7 +6,6 @@ package view;
 
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Scanner;
 import model.FruitList;
 import model.FruitModel;
 import utils.Validation;
@@ -57,6 +56,7 @@ public class FruitView {
             fruitList.createFruit(fruit);
             System.out.print("Do you want to continue ? Y/N: ");
         } while (val.checkInputYN());
+        System.out.println();
         System.out.println("-----------------------");
     }
 
@@ -74,12 +74,12 @@ public class FruitView {
             for (FruitModel fruit : fuirtOrders.getFruitList()) {
                 oldAmount = amount;
                 amount = calculateTotalAmount(fruit.getQuantity(), fruit.getPrice());
-                System.out.printf("%-7d  %-12s  %-8d$  %-8.2f$%n",
-                        fruit.getFruitId() - 1, fruit.getFruitName(), fruit.getQuantity(), amount);
+                System.out.printf("%-7s  %-12s  $%-8s  $%-8s%n",
+                        fruit.getFruitName(), fruit.getQuantity(), fruit.getPrice(), amount);
             }
 
             // Print total amount
-            System.out.printf("Total: " + (amount + oldAmount) + "$");
+            System.out.printf("Total: " + (amount + oldAmount) + "$\n");
         }
     }
 
@@ -92,7 +92,7 @@ public class FruitView {
         System.out.printf("| %-8s | %-18s | %-18s | %-13s |%n", "++ Item ++", "++ Fruit Name ++", "++ Origin ++", "++ Price ++");
 
         for (FruitModel fruit : fruitList.getFruitList()) {
-            System.out.printf("| %-12s %-22s %-22s %-17s |%n", fruit.getFruitId() - 1, fruit.getFruitName(), fruit.getOrigin(), fruit.getPrice() + "$");
+            System.out.printf("| %-12s %-22s %-22s $%-17s |%n", fruit.getFruitId(), fruit.getFruitName(), fruit.getOrigin(), fruit.getPrice());
         }
     }
 
@@ -100,9 +100,14 @@ public class FruitView {
         do {
             int itemId = 0, quantity = 0;
             System.out.print("Select item: ");
-            itemId = val.checkInputIntLimit(0, fruitList.size() - 1);
+            itemId = val.checkInputIntLimit(1, fruitList.size());
             String fruitName = getNameById(itemId);
             System.out.println("You selected: " + fruitName);
+            if (isStocksEmpty(itemId)) {
+                System.out.println("Stock is empty");
+                break;
+            }
+
             System.out.print("Please input quantity: ");
             quantity = val.checkInputIntLimit(1, getQuantityById(itemId));
 
@@ -123,11 +128,12 @@ public class FruitView {
 
             int newQuantity = getQuantityById(itemId) - quantity;
             fruitList.get(itemId).setQuantity(newQuantity);
+//            deleteFruit(itemId);
         } while (val.checkInputYN());
     }
 
     public String getNameById(int id) {
-        if (id >= 0 && id < fruitList.size()) {
+        if (id >= 0 && id <= fruitList.size()) {
             return fruitList.get(id).getFruitName();
         } else {
             return null;
@@ -135,7 +141,7 @@ public class FruitView {
     }
 
     public double getPriceById(int id) {
-        if (id >= 0 && id < fruitList.size()) {
+        if (id >= 0 && id <= fruitList.size()) {
             return fruitList.get(id).getPrice();
         } else {
             return -1;
@@ -143,7 +149,7 @@ public class FruitView {
     }
 
     public String getOriginById(int id) {
-        if (id >= 0 && id < fruitList.size()) {
+        if (id >= 0 && id <= fruitList.size()) {
             return fruitList.get(id).getOrigin();
         } else {
             return null;
@@ -151,10 +157,18 @@ public class FruitView {
     }
 
     public int getQuantityById(int id) {
-        if (id >= 0 && id < fruitList.size()) {
+        if (id >= 0 && id <= fruitList.size()) {
             return fruitList.get(id).getQuantity();
         } else {
             return -1;
         }
     }
+
+    public boolean isStocksEmpty(int id) {
+        return getQuantityById(id) == 0;
+    }
+    
+//    public void deleteFruit(int id){
+//        if (getQuantityById(id) == 0) fruitList.delete(id);
+//    }
 }

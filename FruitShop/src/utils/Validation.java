@@ -15,11 +15,6 @@ public class Validation {
 
     private final Scanner sc = new Scanner(System.in);
 
-    public String getString(String msg) {
-        System.out.print(msg + ": ");
-        return sc.nextLine();
-    }    
-    
     public int getInt(String msg) {
         int nInt = 0;
         boolean isValidInput = false;
@@ -35,6 +30,22 @@ public class Validation {
             }
         }
         return nInt;
+    }
+
+    public int checkInputIntLimit(int min, int max) {
+        while (true) {
+            try {
+                int result = Integer.parseInt(sc.nextLine().trim());
+                if (result < min || result > max) {
+                    throw new NumberFormatException();
+
+                }
+                return result;
+            } catch (NumberFormatException e) {
+                System.out.println("Please input number in rage [" + min + ", " + max + "]");
+                System.out.print("Enter again: ");
+            }
+        }
     }
 
     public double getDouble(String msg) {
@@ -56,6 +67,11 @@ public class Validation {
         }
     }
 
+    public String getString(String msg) {
+        System.out.print(msg + ": ");
+        return sc.nextLine();
+    }
+
     public String checkInputString() {
         //loop until user input correct
         while (true) {
@@ -65,22 +81,6 @@ public class Validation {
                 System.out.print("Enter again: ");
             } else {
                 return result;
-            }
-        }
-    }
-
-    public int checkInputIntLimit(int min, int max) {
-        while (true) {
-            try {
-                int result = Integer.parseInt(sc.nextLine().trim());
-                if (result < min || result > max) {
-                    throw new NumberFormatException();
-
-                }
-                return result;
-            } catch (NumberFormatException e) {
-                System.out.println("Fruit is out of stocks, Please input number in rage [" + min + ", " + max + "]");
-                System.out.print("Enter again: ");
             }
         }
     }
@@ -102,41 +102,4 @@ public class Validation {
         }
     }
 
-    public boolean checkInputUD() {
-        while (true) {
-            String result = getString("Do you want to update (U) or delete (D) student");
-            if (result.equalsIgnoreCase("U")) {
-                return true;
-            }
-            if (result.equalsIgnoreCase("D")) {
-                return false;
-            }
-            System.out.println("Please input u/U or d/D.");
-            System.out.print("Enter again: ");
-        }
-    }
-
-    public boolean checkInt(String msg) {
-        try {
-            Integer.parseInt(msg);
-            return true;  // Parsing successful
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid number Int");
-            return false;  // Parsing failed
-        }
-    }
-
-    public boolean isValid(String data, String regex) {
-        return data.trim().matches(regex);
-    }
-
-    public boolean isName(String data) {
-        return !data.isEmpty();
-    }
-
-    public boolean isCourse(String data) {
-        return data.equalsIgnoreCase("java")
-                || data.equalsIgnoreCase("c/c++")
-                || data.equalsIgnoreCase(".net");
-    }
 }
