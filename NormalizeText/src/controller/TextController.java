@@ -5,16 +5,12 @@
 package controller;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.TextModel;
+import utils.FileWorking;
 import view.Menu;
 import view.TextView;
 
@@ -27,18 +23,19 @@ public class TextController extends Menu {
     public TextController() {
         super("Nomalize Text", new String[]{"Load input file", "Nomarlize text", "Print output file"});
     }
-    String inputFile = "input.txt", outputFile = "output.txt";
 
-    TextModel txtModel = new TextModel(inputFile, outputFile);
     TextView txtView = new TextView();
+    TextModel txtModel = new TextModel("input.txt", "output.txt");
+    FileWorking fileW = new FileWorking();
 
     @Override
     public void execute(int n) {
+        String tempNormalizeText = "";
         switch (n) {
             case 1: {
                 try {
                     System.out.println("Input File");
-                    System.out.println(txtModel.readDocument(inputFile));
+                    System.out.println(fileW.readDocument(txtModel.getInputFile()));
                     txtView.displaySuccess();
                 } catch (IOException ex) {
                     txtView.displayError("Error");
@@ -46,14 +43,26 @@ public class TextController extends Menu {
             }
             break;
             case 2:
-                normalizeText(inputFile, outputFile);
+                tempNormalizeText = normalizeText(txtModel.getInputFile());
+            {
+                try {
+                    fileW.writeToFile(tempNormalizeText);
+                } catch (IOException ex) {
+                   txtView.displayError("");
+                } catch (NullPointerException ex){
+                    txtView.displayError("Null");
+                }
+            }
+                txtView.displaySuccess();
                 break;
             case 3: {
                 try {
-                    System.out.println(txtModel.readDocument(outputFile));
-                    txtView.displaySuccess();
+                    System.out.println("Output File");
+                    System.out.println(fileW.readDocument(txtModel.getOutputFile()));                    
                 } catch (IOException ex) {
-                    txtView.displayError("Error");
+                    txtView.displayError("");
+                } catch (NullPointerException ex) {
+                    txtView.displayError("Null");
                 }
             }
             break;
@@ -61,13 +70,12 @@ public class TextController extends Menu {
         }
     }
 
-    public void normalizeText(String inputFile, String outputFile) {
-        BufferedReader br = null;
-        try {
+    public String normalizeText(String inputFile) {
+        StringBuilder normalizedText = new StringBuilder();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(new File(inputFile)))) {
             int countLine = countLine();
             int count = 1;
-            br = new BufferedReader(new FileReader(new File(inputFile)));
-            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)));
             String line;
             while ((line = br.readLine()) != null) {
                 if (isLineEmpty(line)) {
@@ -79,20 +87,23 @@ public class TextController extends Menu {
                 line = noSpaceQuotes(line);
                 line = firstUpercase(line);
                 line = lastAddDot(line);
-                pw.print(line);
+
+                normalizedText.append(line);
+
                 if (count < countLine) {
-                    pw.print(System.getProperty("line.separator"));
+                    normalizedText.append(System.getProperty("line.separator"));
                 }
                 count++;
             }
-            br.close();
-            pw.close();
-            txtView.displaySuccess();
+
+//            txtView.displaySuccess();
         } catch (FileNotFoundException ex) {
             txtView.displayError("Can't not found");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            txtView.displayError("");
         }
+
+        return normalizedText.toString();
     }
 
     public String formatOneSpace(String line) {
@@ -106,21 +117,21 @@ public class TextController extends Menu {
     }
 
     public String formatOneSpaceSpecial(String line, String character) {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         String[] strings = line.split("\\s*\\" + character + "\\s*");
 
         for (int i = 0; i < strings.length; i++) {
-            stringBuffer.append(strings[i].trim());
+            stringBuilder.append(strings[i].trim());
             if (i < strings.length - 1) {
-                stringBuffer.append(" " + character + " ");
+                stringBuilder.append(" " + character + " ");
             }
         }
 
-        return stringBuffer.toString().trim();
+        return stringBuilder.toString().trim();
     }
 
     public String formatSpecialCharacters(String line) {
-        StringBuffer strBuffer = new StringBuffer(line);
+        StringBuilder strBuffer = new StringBuilder(line);
         for (int i = 0; i < strBuffer.length() - 1; i++) {
             if (strBuffer.charAt(i) == ' ' && strBuffer.charAt(i + 1) == '.'
                     || strBuffer.charAt(i + 1) == ','
@@ -132,7 +143,7 @@ public class TextController extends Menu {
     }
 
     public String afterDotUpperCase(String line) {
-        StringBuffer strBuffer = new StringBuffer(line);
+        StringBuilder strBuffer = new StringBuilder(line);
         boolean capitalizeNext = true;
 
         for (int i = 0; i < strBuffer.length(); i++) {
@@ -151,29 +162,29 @@ public class TextController extends Menu {
 
     public String noSpaceQuotes(String line) {
         int countQuetes = 0;
-        StringBuffer stringBuffer = new StringBuffer(line);
-        for (int i = 0; i < stringBuffer.length(); i++) {
-            if (stringBuffer.charAt(i) == '"' && countQuetes % 2 == 0) {
-                stringBuffer.deleteCharAt(i + 1);
+        StringBuilder stringBuilder = new StringBuilder(line);
+        for (int i = 0; i < stringBuilder.length(); i++) {
+            if (stringBuilder.charAt(i) == '"' && countQuetes % 2 == 0) {
+                stringBuilder.deleteCharAt(i + 1);
                 countQuetes++;
-            } else if (stringBuffer.charAt(i) == '"' && countQuetes % 2 == 1
+            } else if (stringBuilder.charAt(i) == '"' && countQuetes % 2 == 1
                     && i != 0) {
-                stringBuffer.deleteCharAt(i - 1);
+                stringBuilder.deleteCharAt(i - 1);
                 countQuetes++;
             }
         }
-        return stringBuffer.toString().trim();
+        return stringBuilder.toString().trim();
     }
 
     public String firstUpercase(String line) {
-        StringBuffer stringBuffer = new StringBuffer(line);
+        StringBuilder stringBuilder = new StringBuilder(line);
         for (int i = 0; i < line.length(); i++) {
             if (Character.isLetter(line.charAt(i))) {
-                stringBuffer.setCharAt(i, Character.toUpperCase(line.charAt(i)));
+                stringBuilder.setCharAt(i, Character.toUpperCase(line.charAt(i)));
                 break;
             }
         }
-        return stringBuffer.toString().trim();
+        return stringBuilder.toString().trim();
     }
 
     public String lastAddDot(String line) {
@@ -194,9 +205,9 @@ public class TextController extends Menu {
                 }
             }
         } catch (FileNotFoundException ex) {
-            System.err.println("File not found.");
+            txtView.displayError("File not found");
         } catch (IOException ex) {
-            ex.printStackTrace();
+            txtView.displayError("");
         }
         return countLine;
     }
