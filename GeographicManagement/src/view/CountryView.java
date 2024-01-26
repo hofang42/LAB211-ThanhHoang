@@ -18,7 +18,7 @@ public class CountryView {
     Inputter inputter = new Inputter();
 
     public void addCountryInfomation(ArrayList<EastAsiaCountries> arr) {
-        String countryCode = "",countryName ="", countryTerrain = "";
+        String countryCode = "",countryName, countryTerrain;
         float totalArea = 0;       
         int eAsize = arr.size();
         if (eAsize > 11) {
