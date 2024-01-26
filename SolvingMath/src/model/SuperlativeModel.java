@@ -10,7 +10,7 @@ package model;
  */
 public class SuperlativeModel {
     private float a,b;
-
+    private float x;
     public SuperlativeModel() {
     }
 
@@ -35,5 +35,12 @@ public class SuperlativeModel {
         this.b = b;
     }
 
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
     
 }
