@@ -18,16 +18,18 @@ public class CountryView {
     Inputter inputter = new Inputter();
 
     public void addCountryInfomation(ArrayList<EastAsiaCountries> arr) {
-        String countryCode = "",countryName, countryTerrain;
-        float totalArea = 0;       
+        String countryCode = "", countryName, countryTerrain;
+        float totalArea = 0;
         int eAsize = arr.size();
         if (eAsize > 11) {
             System.out.println("East Asia just have 11 country");
         } else {
-            while(true){
+            while (true) {
                 countryCode = (inputter.getString("Enter code of country"));
-                if (!checkIfExistCode(arr, countryCode)) break;
-            }            
+                if (!checkIfExistCode(arr, countryCode)) {
+                    break;
+                }
+            }
             countryName = (inputter.getString("Enter name of country"));
             boolean flag = true;
             while (flag) {
@@ -43,8 +45,13 @@ public class CountryView {
     }
 
     public void getRecentlyEnterdInfomation(ArrayList<EastAsiaCountries> arr) {
-        System.out.printf("%-10s%-25s%-20s%-25s\n", "ID", "Name", "Total Area", "Terrain");
-        arr.get(arr.size() - 1).display();
+        if (arr.isEmpty()) {
+            System.out.println("No country just added");
+        } else {
+            System.out.printf("%-10s%-25s%-20s%-25s\n", "ID", "Name", "Total Area", "Terrain");
+            arr.get(arr.size() - 1).display();
+        }
+
     }
 
     public void searchInfomationByName(ArrayList<EastAsiaCountries> arr) {
