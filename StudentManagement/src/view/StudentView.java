@@ -113,7 +113,7 @@ public class StudentView {
         if (studentFound == null) {
             System.out.println("Not found student.");
             return;
-        } else {
+        } else {    
             if (choice) {
                 String newStudentName = val.getString("Enter Student Name");
                 if (newStudentName.isBlank()) {

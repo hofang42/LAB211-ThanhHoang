@@ -20,8 +20,8 @@ public class ContactController extends Menu{
         super("======== Contact Program ========", new String[] {"Add a Contact", "Display all Contact", "Delete a Contact", "Exit"});
     }
     private FileLoad file = new FileLoad();
-//    ArrayList<ContactModel> contactList = new ArrayList<>();
-     ArrayList<ContactModel> contactList = file.loadData("input.txt");
+    ArrayList<ContactModel> contactList = new ArrayList<>();
+//     ArrayList<ContactModel> contactList = file.loadData("input.txt");
     ContactView contView = new ContactView();
     
     
