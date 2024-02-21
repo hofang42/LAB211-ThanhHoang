@@ -40,7 +40,7 @@ public class FileLoad {
                     String status = arr[4];
                     String date = arr[5];                    
 
-                    if (val.isValidId(id)) {
+                    if (val.isValidId(id) && !val.isExistIdInHistory(id, workerList) && val.isValidAge(age)) {
                         SalaryHistory history = new SalaryHistory(status, date, id, name, age, salary);
                         workerList.add(history);
                     } else {

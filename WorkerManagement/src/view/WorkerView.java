@@ -39,7 +39,7 @@ public class WorkerView {
         int YOB, age;
         do {
             YOB = input.getInt("Enter Year Of Birth");
-            contAge = valid.isValidAge(YOB);
+            contAge = valid.isValidYOB(YOB);
             age = Year.now().getValue() - YOB;
             if (!contAge) {
                 System.out.println("Enter YOB in 18-50");
