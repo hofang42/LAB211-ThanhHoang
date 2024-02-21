@@ -22,6 +22,12 @@ public class SalaryHistory extends WorkerModel implements Comparable<SalaryHisto
         this.date = date;
     }
 
+    public SalaryHistory(String status, String date, String id, String name, int age, double salary) {
+        super(id, name, age, salary);
+        this.date = date;
+        this.status = status;
+    }
+
     public String getDate() {
         return date;
     }

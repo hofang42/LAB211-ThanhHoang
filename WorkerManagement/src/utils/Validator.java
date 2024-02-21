@@ -34,6 +34,6 @@ public class Validator {
     }  
     
     public boolean isValidAge(int yearAge){
-        return (Year.now().getValue() - yearAge > 18) && (Year.now().getValue() - yearAge < 50);
+        return (Year.now().getValue() - yearAge >= 18) && (Year.now().getValue() - yearAge <= 50);
     }
 }

@@ -4,9 +4,11 @@
  */
 package controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import model.SalaryHistory;
 import model.WorkerModel;
+import utils.FileLoad;
 import view.Menu;
 import view.WorkerView;
 
@@ -20,9 +22,10 @@ public class WorkerController extends Menu {
         super("======== Worker Management ========", new String[]{"Add Worker", "Up salary", "Down salary", "Display Information salary", "Exit"});
 
     }
-
+     FileLoad file = new FileLoad();
     ArrayList<WorkerModel> workerList = new ArrayList<>();
-    ArrayList<SalaryHistory> historySalary = new ArrayList<>();
+//    ArrayList<SalaryHistory> historySalary = new ArrayList<>();
+    ArrayList<SalaryHistory> historySalary = file.loadData("worker.dat");
     WorkerView workerView = new WorkerView();
     
 
@@ -39,7 +42,7 @@ public class WorkerController extends Menu {
                 workerView.downSalary(workerList, historySalary);
                 break;
             case 4:
-                workerView.displayWorker(historySalary);
+                workerView.displayHistory(historySalary);
                 break;
             case 5:
                 System.exit(0);
