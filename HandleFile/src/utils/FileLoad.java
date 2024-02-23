@@ -53,7 +53,7 @@ public class FileLoad {
     }
 
     public void writeToFile(ArrayList<PersonModel> personList, String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("E:\\Code\\LAB211\\HandleFile\\src\\"+filePath))) {
             for (PersonModel s : personList) {
                 String name = s.getName();
                 String address = s.getAddress();

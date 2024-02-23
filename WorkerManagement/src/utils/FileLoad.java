@@ -64,7 +64,6 @@ public class FileLoad {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("doctor.dat"))) {
             for (SalaryHistory s : workerList) {                
 
-                // Access properties from DoctorModel
                 String id = s.getId();
                 String name = s.getName();
                 int age = s.getAge();
@@ -72,7 +71,6 @@ public class FileLoad {
                 String status = s.getStatus();
                 String date = s.getDate();                
 
-                // Using "|" as a separator between key and values
                 writer.write(id + "|" + name + "|" + age + "|" + salary + "|" + status + "|" + date);
                 writer.newLine();
             }

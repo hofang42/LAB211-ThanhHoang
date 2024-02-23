@@ -35,22 +35,17 @@ public class Inputter {
         }
         return nInt;
     }
-    
-    
+
     public double getDouble(String msg) {
         double nInt = 0;
-        boolean isValidInput = false;
-
-        while (!isValidInput) {
-            try {
-                System.out.print(msg + ": ");
-                String n = sc.nextLine();
-                nInt = Double.parseDouble(n);
-                isValidInput = true;
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a valid salary.");
-            }
+        try {
+            System.out.print(msg + ": ");
+            String n = sc.nextLine();
+            nInt = Double.parseDouble(n);
+        } catch (NumberFormatException e) {            
+            return 0;
         }
+
         return nInt;
     }
 
@@ -109,7 +104,7 @@ public class Inputter {
             }
         }
     }
-    
+
     public String getStringNotEmpty(String msg) {
         //loop until user input correct
         while (true) {
@@ -123,6 +118,5 @@ public class Inputter {
             }
         }
     }
-    
-   
+
 }
