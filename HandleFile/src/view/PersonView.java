@@ -24,7 +24,7 @@ public class PersonView {
         String filePath = input.getStringNotEmpty("Enter Path");
         double money = input.getDouble("Enter Money");
         FileModel file = new FileModel(filePath);
-        ArrayList<PersonModel> personFound = getPerson(file, money);        
+        ArrayList<PersonModel> personFound = getPerson(file, money);
         printPersonFound(personFound);
     }
 
@@ -40,25 +40,26 @@ public class PersonView {
     }
 
     private void printPersonFound(ArrayList<PersonModel> personFound) {
+        System.out.println("----------- Result -----------");
         System.out.printf("%-20s%-20s%-20s\n", "Name", "Address", "Money");
         for (PersonModel person : personFound) {
             System.out.printf("%-20s%-20s%-20.1f\n", person.getName(),
                     person.getAddress(), person.getMoney());
         }
         Collections.sort(personFound);
-        try{
+        try {
             System.out.println("Max: " + personFound.get(0).getName());
-        System.out.println("Min: " + personFound.get(personFound.size() - 1).getName());
-        } catch(IndexOutOfBoundsException e){
+            System.out.println("Min: " + personFound.get(personFound.size() - 1).getName());
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Empty");
-        }        
+        }
     }
-    
-    public void copyWordOneTimes(){
+
+    public void copyWordOneTimes() {
         String filePath = input.getStringNotEmpty("Enter Source");
         String desFilePath = input.getStringNotEmpty("Enter new file name");
         FileModel fileModel = new FileModel(filePath, desFilePath);
         ArrayList<PersonModel> personList = getPerson(fileModel, 0);
-        file.writeToFile(personList, desFilePath);        
+        file.writeToFile(personList, desFilePath);
     }
 }

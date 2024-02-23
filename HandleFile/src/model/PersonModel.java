@@ -14,6 +14,9 @@ public class PersonModel implements Comparable<PersonModel> {
     private String address;
     private double money;
 
+    public PersonModel() {
+    }    
+    
     public PersonModel(String name, String address, double money) {
         this.name = name;
         this.address = address;

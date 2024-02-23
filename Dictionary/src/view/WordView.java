@@ -28,6 +28,7 @@ public class WordView {
                 System.out.print("Do you want to update Vietnamese meaning? Y/N: ");
                 while (valid.checkInputYN()) {
                     updateWord(dictionary, engWord);
+                    System.out.println("Update successful");
                     return;
                 }
             }
@@ -48,8 +49,10 @@ public class WordView {
             if (engWord.equalsIgnoreCase(delWord)) {
                 dictionary.remove(delWord);
                 System.out.println("Successful");
+                return;
             }
         }
+        System.out.println("Word is not in dictionary");
     }
 
     public void transWord(HashMap<String, WordModel> dictionary) {
