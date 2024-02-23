@@ -4,7 +4,6 @@
  */
 package controller;
 
-import java.io.File;
 import java.util.ArrayList;
 import model.SalaryHistory;
 import model.WorkerModel;
@@ -43,6 +42,7 @@ public class WorkerController extends Menu {
                 break;
             case 4:
                 workerView.displayHistory(historySalary);
+//                file.writeToFile(historySalary);
                 break;
             case 5:
                 System.exit(0);
