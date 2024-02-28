@@ -13,9 +13,7 @@ public abstract class Shape {
 
     public Shape() {
     }
-
-    
-    
+   
     public Shape(double area, double perimeter) {
         this.area = area;
         this.perimeter = perimeter;
