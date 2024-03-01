@@ -20,7 +20,7 @@ public class ShapeController {
     
     ShapeView shapeView = new ShapeView();
     
-    public void excute(){
+    public void excute(){        
         shapeView.takeInfo(rectangle, circle, triangle);
         shapeView.printInfo(rectangle, circle, triangle);
     }
