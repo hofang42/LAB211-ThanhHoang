@@ -62,6 +62,7 @@ public class AnalyzeView {
         hmNumber.put("Even Numbers: ", evenNum);
         hmNumber.put("All Numbers: ", allNum);
 
+        System.out.println("-----Result Analysis------");
         for (HashMap.Entry m : hmNumber.entrySet()) {
             System.out.println(m.getKey() + " " + m.getValue());
         }
@@ -74,6 +75,7 @@ public class AnalyzeView {
         StringBuilder lowerCase = new StringBuilder();
         StringBuilder special = new StringBuilder();
         StringBuilder allChar = new StringBuilder();
+        
         upperCase.append(data.toString().replaceAll("\\W|[0-9]|[a-z]", ""));
         lowerCase.append(data.toString().replaceAll("\\W|[0-9]|[A-Z]", ""));
         special.append(data.toString().replaceAll("\\w", ""));
@@ -83,8 +85,10 @@ public class AnalyzeView {
         hmChar.put("Lowercase: ", lowerCase);
         hmChar.put("Special: ", special);
         hmChar.put("All Character: ", allChar);
+        
+        System.out.println("-----Result Analysis------");
         for (HashMap.Entry m : hmChar.entrySet()) {
             System.out.println(m.getKey() + " " + m.getValue());
         }
-    }
+    }       
 }
