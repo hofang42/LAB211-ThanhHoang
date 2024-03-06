@@ -4,25 +4,20 @@
  */
 package controller;
 
-import model.FileModel;
-import view.FileView;
+import model.DataInput;
+import view.FormatView;
 
 /**
  *
  * @author hoang
  */
-public class FileController {
-
-    public FileController() {
-        
-    }
-    
-    FileView fileView = new FileView();
-    FileModel file = new FileModel();
+public class FormatController {
+    FormatView formatView = new FormatView();
+    DataInput data = new DataInput();
     
     public void excute(){
-        fileView.getInputPath(file);
-        fileView.printInfo(file);        
+        formatView.checkPhone(data);
+        formatView.checkEmail(data);
+        formatView.checkDate(data);
     }
-   
 }
