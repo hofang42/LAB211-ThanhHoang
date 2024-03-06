@@ -86,7 +86,7 @@ public class AnalyzeView {
         hmChar.put("Special: ", special);
         hmChar.put("All Character: ", allChar);
         
-        System.out.println("-----Result Analysis------");
+        System.out.println("------Result Analysis-------");
         for (HashMap.Entry m : hmChar.entrySet()) {
             System.out.println(m.getKey() + " " + m.getValue());
         }
